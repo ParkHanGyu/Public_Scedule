@@ -1,4 +1,4 @@
-package com.schedule.project.domain.dto.response;
+package com.schedule.project.domain.dto.response.auth;
 
 import com.schedule.project.domain.common.ResponseCode;
 import com.schedule.project.domain.common.ResponseMessage;
