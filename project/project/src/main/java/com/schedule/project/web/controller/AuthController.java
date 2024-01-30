@@ -2,8 +2,8 @@ package com.schedule.project.web.controller;
 
 import com.schedule.project.domain.dto.request.auth.EmailAuthChkRequestDto;
 import com.schedule.project.domain.dto.request.auth.EmailAuthRequestDto;
-import com.schedule.project.domain.dto.response.EmailAuthChkResponseDto;
-import com.schedule.project.domain.dto.response.EmailAuthResponseDto;
+import com.schedule.project.domain.dto.response.auth.EmailAuthChkResponseDto;
+import com.schedule.project.domain.dto.response.auth.EmailAuthResponseDto;
 import com.schedule.project.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
