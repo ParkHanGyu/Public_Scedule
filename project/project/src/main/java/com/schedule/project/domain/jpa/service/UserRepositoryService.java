@@ -1,7 +1,7 @@
-package com.schedule.project.domain.service;
+package com.schedule.project.domain.jpa.service;
 
-import com.schedule.project.domain.entity.UserEntity;
-import com.schedule.project.domain.repository.UserEntityRepository;
+import com.schedule.project.domain.jpa.entity.UserEntity;
+import com.schedule.project.domain.jpa.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
