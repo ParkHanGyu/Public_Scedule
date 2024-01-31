@@ -11,24 +11,29 @@ import { useNavigate } from "react-router-dom";
 import SignInResponseDto from "apis/response/auth/sign-in.response.dto";
 import InputBox from "components/InputBox";
 
+//        component: 인증 화면 컴포넌트       //
 const Authentication = () => {
+  //          state: 화면 상태        //
   // 로그인(sign-in) or 회원가입(sign-up)중 어떤걸 띄워줄지  //
   const [view, setView] = useState<"sign-in" | "sign-up">("sign-in");
 
+  //          state: 쿠키 상태        //
   //          setCookie를 사용해 쿠키의 이름, 값,옵션(ex만료시간)을 설정 할 수 있음        //
   const [cookies, setCookie] = useCookies();
 
+  //        function: 네비게이트 함수     //
   //        페이지 간의 전환을 담당 ex) useNavigate('/') => /경로로 이동    //
   const navigate = useNavigate();
 
+  //        component: sign in card 컴포넌트       //
   // ===========================로그인(sign-in) 시작==================================
   const SignInCard = () => {
     // value : emailRef가 참조하는 inputElement가 존재하면 그의 value를 반환. null이면 undefined를 반환. 말고도 type, placeholder, disabled, focus()가 있다.//
 
     // focus를 위한? //
-    // emailRef : 이메일 요소 참조 상태 //
+    // state: 이메일 요소 참조 상태 //
     const emailRef = useRef<HTMLInputElement | null>(null);
-    //      passwordRef : 패스워드 요소 참조 상태        //
+    // state: 비밀번호 요소 참조 상태 //
     const passwordRef = useRef<HTMLInputElement | null>(null);
 
     // 이메일과 비밀번호의 값을 담기 위한? //
@@ -37,12 +42,13 @@ const Authentication = () => {
     //      state: 패스워드 상태      //
     const [password, setPassword] = useState<string>("");
 
+    //      state: 패스워드 타입 상태      //
     //      패스워드 가시성을 제어하기 위한(기본적으로 ***.. 아이콘을 누르면 입력한 비밀번호가 보임. 그렇기 때문에 하드코딩으로 password를 입력하지 않고 {passwordType}을 사용해 동적으로 처리)      //
     const [passwordType, setPasswordType] = useState<"text" | "password">(
       "password"
     );
 
-    //      패스워드 입력칸 버튼 아이콘 상태      //
+    //      state: 패스워드 버튼 아이콘 상태      //
     const [passwordButtonIcon, setPasswordButtonIcon] = useState<
       "eye-light-off-icon" | "eye-light-on-icon"
     >("eye-light-off-icon");
@@ -60,29 +66,25 @@ const Authentication = () => {
     return (
       <div className="root">
         <div className="login_input_box">
-          <form action="">
-            <InputBox
-              label="이메일"
-              type="text"
-              placeholder="이메일 주소를 입력해주세요"
-              value={value}
-              error={false}
-              setValue={setValue}
-              message="aaaa"
-            />
-            <p>이메일</p>
-            <input type="text" placeholder="이메일을 입력해주세요." />
+          <InputBox
+            label="이메일"
+            type="text"
+            placeholder="이메일 주소를 입력해주세요"
+            value={value}
+            error={false}
+            setValue={setValue}
+            message="aaaa"
+          />
 
-            <p>비밀번호</p>
-            <input
-              type="password"
-              placeholder="영어 대소문자,숫자,특수문자 어쩌구 저쩌구"
-            />
+          <p>비밀번호</p>
+          <input
+            type="password"
+            placeholder="영어 대소문자,숫자,특수문자 어쩌구 저쩌구"
+          />
 
-            <button className="login_button" type="submit">
-              로그인
-            </button>
-          </form>
+          <button className="login_button" type="submit">
+            로그인
+          </button>
         </div>
 
         <hr />
