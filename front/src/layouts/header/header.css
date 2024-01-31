@@ -1,0 +1,29 @@
+.App-link {
+  color: #61dafb;
+}
+.selected {
+  font-weight: bold;
+}
+
+.header{
+  background-color: #FFD9C2;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  width:100%;
+  margin:auto;
+  height:80px;
+}
+.headerNav{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  height:100%;
+}
+.headerNav > div{
+  margin-right:40px;
+  line-height:80px;
+}
+.headerLogo{
+  margin-left:40px;
+}
