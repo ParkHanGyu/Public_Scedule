@@ -1,16 +1,23 @@
+
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import WeekCard from './components/week-schedule/week-schedule';
 import MainHeader from './layouts/header/header';
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AUTH_PATH } from "./constant";
+import Container from "./layouts/Container";
+import Authentication from "./views/Authentication";
 
 function App() {
   let today = new Date();
   return (
-    <div>
-      <MainHeader></MainHeader>
-      <WeekCard nowdate={today}></WeekCard>
-    </div>
+    <Router>
+      <Routes>
+        <Route element={<Container />}>
+          <Route path={AUTH_PATH()} element={<Authentication />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
