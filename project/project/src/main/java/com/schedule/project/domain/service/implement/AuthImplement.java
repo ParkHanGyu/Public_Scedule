@@ -1,14 +1,8 @@
 package com.schedule.project.domain.service.implement;
 
 import com.schedule.project.domain.common.AuthenticationNumber;
-import com.schedule.project.domain.dto.request.auth.EmailAuthChkRequestDto;
-import com.schedule.project.domain.dto.request.auth.EmailAuthRequestDto;
-import com.schedule.project.domain.dto.request.auth.SignInRequestDto;
-import com.schedule.project.domain.dto.request.auth.SignUpRequestDto;
-import com.schedule.project.domain.dto.response.auth.EmailAuthChkResponseDto;
-import com.schedule.project.domain.dto.response.auth.EmailAuthResponseDto;
-import com.schedule.project.domain.dto.response.auth.SignInResponseDto;
-import com.schedule.project.domain.dto.response.auth.SignUpResponseDto;
+import com.schedule.project.domain.dto.request.auth.*;
+import com.schedule.project.domain.dto.response.auth.*;
 import com.schedule.project.domain.jpa.entity.AuthNumber;
 import com.schedule.project.domain.jpa.entity.UserEntity;
 import com.schedule.project.domain.jpa.service.AuthNumberRepositoryService;
@@ -56,6 +50,21 @@ public class AuthImplement implements AuthService {
     }
 
     // ==================== POST ================== //
+
+
+    @Override
+    public ResponseEntity<? super NicknameDuplChkResponseDto> nicknameDuplChk(NicknameDuplChkRequestDto dto) {
+        try{
+            String dtoNickname = dto.getNickname();
+            Optional<UserEntity> optionalUser = userRepositoryService.findByNickname(dtoNickname);
+            if(optionalUser.isPresent()) return NicknameDuplChkResponseDto.duplicateNickname();
+        }catch (Exception e){
+            e.printStackTrace();
+            return NicknameDuplChkResponseDto.databaseError();
+        }
+        return NicknameDuplChkResponseDto.success();
+    }
+
     @Override // 인증 번호 확인 메서드
     public ResponseEntity<? super EmailAuthChkResponseDto> emailAuthChk(EmailAuthChkRequestDto dto) {
         try{
