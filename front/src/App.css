@@ -27,6 +27,81 @@
 .App-link {
   color: #61dafb;
 }
+.selected {
+  font-weight: bold;
+}
+
+.header{
+  background-color: #FFD9C2;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1440px;
+  height:80px;
+}
+.headerNav{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  height:100%;
+}
+.headerNav > div{
+  margin-right:40px;
+  line-height:80px;
+}
+.headerLogo{
+  margin-left:40px;
+}
+
+.weekBox{
+  margin:auto;
+  text-align: center;
+  display:flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.dayBox {
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.weekInfo {
+  margin-bottom: 10px;
+}
+
+.dayBoxs.slide-in-left {
+  transform: translateX(-100%);
+}
+
+.dayBoxs.slide-in-right {
+  transform: translateX(100%);
+}
+
+.dayBoxs{
+  display:flex;
+  margin:auto;
+}
+.dayBoxs button,.dayBoxs div{
+  margin:0 10px 0 10px;
+  font-size:16px;
+}
+.dayBoxs div{
+  width:85px;
+  height:85px;
+  padding-top:10px;
+  line-height:16px;
+  box-sizing: border-box;
+  border:1px solid black;
+  border-radius:10px;
+}
+
 
 @keyframes App-logo-spin {
   from {
