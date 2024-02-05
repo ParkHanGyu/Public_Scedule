@@ -6,16 +6,23 @@
 
 .inputbox-label {
   color: rgba(0, 0, 0, 0.7);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 140%;
+  margin-top: 30px;
+  font-weight: 700;
 }
 
 .inputbox-container {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  padding: 11px 16px 11px 0px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.143);
+  padding: 0px 16px 4px 0px;
 
   display: flex;
   align-items: center;
+}
+
+.inputbox-container:hover {
+  border-bottom: 1px solid rgb(0, 0, 0);
+  box-shadow: none; /* 그림자 제거 */
 }
 
 .inputbox-container-error {

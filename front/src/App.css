@@ -6,11 +6,6 @@ button {
   cursor: pointer;
 }
 
-hr {
-  border: 1px solid rgba(192, 192, 192, 0.159);
-  width: 90%;
-}
-
 a {
   text-decoration: none; /* 기본 밑줄을 제거합니다 */
 }
@@ -35,32 +30,10 @@ a {
   font-weight: bold;
 }
 
-.header{
-  background-color: #FFD9C2;
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1440px;
-  height:80px;
-}
-.headerNav{
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
-  height:100%;
-}
-.headerNav > div{
-  margin-right:40px;
-  line-height:80px;
-}
-.headerLogo{
-  margin-left:40px;
-}
-
-.weekBox{
-  margin:auto;
+.weekBox {
+  margin: auto;
   text-align: center;
-  display:flex;
+  display: flex;
   justify-content: space-between;
   flex-direction: column;
 }
@@ -88,24 +61,24 @@ a {
   transform: translateX(100%);
 }
 
-.dayBoxs{
-  display:flex;
-  margin:auto;
+.dayBoxs {
+  display: flex;
+  margin: auto;
 }
-.dayBoxs button,.dayBoxs div{
-  margin:0 10px 0 10px;
-  font-size:16px;
+.dayBoxs button,
+.dayBoxs div {
+  margin: 0 10px 0 10px;
+  font-size: 16px;
 }
-.dayBoxs div{
-  width:85px;
-  height:85px;
-  padding-top:10px;
-  line-height:16px;
+.dayBoxs div {
+  width: 85px;
+  height: 85px;
+  padding-top: 10px;
+  line-height: 16px;
   box-sizing: border-box;
-  border:1px solid black;
-  border-radius:10px;
+  border: 1px solid black;
+  border-radius: 10px;
 }
-
 
 .icon {
   width: 100%;
@@ -125,4 +98,8 @@ a {
 
 .expand-right-light-icon {
   background-image: url(../public/assets/image/expand-right-light.png);
+}
+
+.main {
+  padding-top: 30px;
 }

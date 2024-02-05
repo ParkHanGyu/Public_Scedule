@@ -8,7 +8,11 @@ import React, {
 import "./style.css";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import SignInResponseDto from "apis/response/auth/sign-in.response.dto";
+import { SignInRequestDto } from "apis/request/auth";
+import { signInRequest } from "apis";
+import { SignInResponseDto } from "apis/response/auth";
+import { ResponseDto } from "apis/response";
+import { MAIN_PATH } from "constant";
 import InputBox from "components/InputBox";
 
 //        component: 인증 화면 컴포넌트       //
@@ -61,38 +65,153 @@ const Authentication = () => {
       setView("sign-up");
     };
 
-    const [value, setValue] = useState<string>("");
+    //      function: sign in response 처리 함수    //
+    const signInResponse = (
+      responseBody: SignInResponseDto | ResponseDto | null
+    ) => {
+      if (!responseBody) {
+        alert("네트워크 이상입니다.");
+        return;
+      }
+      const { code } = responseBody;
+      if (code === "VF") alert("모두 입력하세요.");
+      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code === "SF" || code === "VF") setError(true);
+      if (code !== "SU") return;
+
+      const { token, expirationTime } = responseBody as SignInResponseDto;
+      const now = new Date().getTime();
+      const expires = new Date(now + expirationTime * 1000);
+      // 유효시간 : 현재시간 + 백엔드에서 설정한 시간(60분) * 1000
+      setCookie("accessToken", token, { expires, path: MAIN_PATH() });
+      // 'accessToken' : 이름, token 설정, path : 유효경로(MAIN_PATH() 이하의 모든 경로에서 유효함)
+      navigate(MAIN_PATH());
+    };
+
+    //      event handler: 로그인 버튼 클릭 이벤트 처리 함수      //
+    const onSignInButtonClickHandler = () => {
+      const requestBody: SignInRequestDto = { email, password };
+      signInRequest(requestBody).then(signInResponse);
+    };
+
+    //==================이메일에 필요한=======================
+
+    //      event handler: 이메일 변경 이벤트 처리 함수      //
+
+    // input에 value가 있을때랑 없을때랑 스타일 변화를 위한
+    const [isEmailNotEmpty, setIsEmailNotEmpty] = useState<boolean>(false);
+
+    const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      setError(false);
+      const { value } = event.target;
+      setIsEmailNotEmpty(!!value);
+      setEmail(value);
+    };
+
+    //      event handler: 이메일 인풋 키 다운 이벤트 처리      //
+    const onEmailKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key !== "Enter") return;
+      if (!passwordRef.current) return;
+      passwordRef.current.focus();
+    };
+
+    //=====================비밀번호===========================
+    //      event handler: 비밀번호 변경 이벤트 처리 함수      //
+    // input에 value가 있을때랑 없을때랑 스타일 변화를 위한
+    const [isPasswordNotEmpty, setIsPasswordNotEmpty] =
+      useState<boolean>(false);
+
+    const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      setError(false);
+      const { value } = event.target;
+      setIsPasswordNotEmpty(!!value);
+      setPassword(value);
+    };
+
+    //      event handler: 패스워드 버튼 클릭 이벤트 처리 함수      //
+    const onPasswordButtonClickHandler = () => {
+      if (passwordType === "text") {
+        setPasswordType("password");
+        setPasswordButtonIcon("eye-light-off-icon");
+      } else {
+        setPasswordType("text");
+        setPasswordButtonIcon("eye-light-on-icon");
+      }
+    };
+
+    //      event handler: 패스워드 인풋 키 다운 이벤트 처리      //
+    const onPasswordKeyDownHandler = (
+      event: KeyboardEvent<HTMLInputElement>
+    ) => {
+      if (event.key !== "Enter") return;
+      onSignInButtonClickHandler();
+    };
+
+    // ===============로그인 button 활성화===============//
 
     return (
       <div className="root">
         <div className="login_input_box">
           <InputBox
-            label="이메일"
+            ref={emailRef}
+            label="이메일 주소"
             type="text"
-            placeholder="이메일 주소를 입력해주세요"
-            value={value}
-            error={false}
-            setValue={setValue}
-            message="aaaa"
+            placeholder="이메일 주소를 입력해주세요."
+            error={error}
+            value={email}
+            onChange={onEmailChangeHandler}
+            onKeyDown={onEmailKeyDownHandler}
           />
 
-          <p>비밀번호</p>
-          <input
-            type="password"
-            placeholder="영어 대소문자,숫자,특수문자 어쩌구 저쩌구"
+          <InputBox
+            ref={passwordRef}
+            label="패스워드"
+            type={passwordType}
+            placeholder="비밀번호를 입력해주세요."
+            error={error}
+            value={password}
+            onChange={onPasswordChangeHandler}
+            icon={passwordButtonIcon}
+            onButtonClick={onPasswordButtonClickHandler}
+            onKeyDown={onPasswordKeyDownHandler}
           />
 
-          <button className="login_button" type="submit">
-            로그인
-          </button>
+          <div className="auth-card-bottom">
+            {error && (
+              <div className="auth-sign-in-error-box">
+                <div className="auth-sign-in-error-message">
+                  {
+                    "이메일 주소 또는 비밀번호를 잘못 입력했습니다. \n입력하신 내용을 다시 확인해주세요."
+                  }
+                </div>
+              </div>
+            )}
+
+            {/* 로그인 버튼 */}
+            <div
+              className={`login_button_off ${
+                isEmailNotEmpty && isPasswordNotEmpty ? "login_button_on" : ""
+              }`}
+              onClick={
+                isEmailNotEmpty && isPasswordNotEmpty
+                  ? onSignInButtonClickHandler
+                  : undefined
+              }
+            >
+              {"로그인"}
+            </div>
+          </div>
         </div>
-
-        <hr />
 
         <div className="access_options">
           <ul>
             <li>
-              <a onClick={onSignUpLinkClickHandler}>회원가입</a>
+              <a
+                className="auth-description-link"
+                onClick={onSignUpLinkClickHandler}
+              >
+                {"회원가입"}
+              </a>
             </li>
             <li>
               <a href="#">이메일 찾기</a>

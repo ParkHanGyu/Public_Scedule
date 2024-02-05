@@ -24,11 +24,30 @@
 }
 
 .header {
+  width: 100%;
+  background-color: #ffd9c2;
+}
+
+.header-inner {
   margin: auto; /* header의 양쪽 여백(margin)을 동등하게 맞춤 -> 수평가운데정렬 */
-  width: 1440px;
+  max-width: 1440px;
   height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center; /* 하위 요소들 수직 가운데정렬 */
   border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+.headerNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+.headerNav > div {
+  margin-right: 40px;
+  line-height: 80px;
+}
+.headerLogo {
+  margin-left: 40px;
 }
