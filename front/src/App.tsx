@@ -1,3 +1,5 @@
+import React from "react";
+import WeekCard from "./components/week-schedule/week-schedule";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AUTH_PATH } from "./constant";
