@@ -1,6 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import "./style.css";
 
-const header = () => {
+const Header = () => {
+
+  const navigate = useNavigate();
+
+  const onTeamMenuClickHandler = () => {
+  }
+
   return (
     <div className="header" role="banner">
       <div className="header-inner" role="banner">
@@ -11,7 +18,7 @@ const header = () => {
           <div className="nav_items">
             <ul>
               <li>
-                <a href="/">팀일정</a>
+                {/* <div onClick={}>{'팀일정'}</div> */}
               </li>
               <li>
                 <a href="/">개인일정</a>
@@ -27,4 +34,4 @@ const header = () => {
   );
 };
 
-export default header;
+export default Header;

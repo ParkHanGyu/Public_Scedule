@@ -1,5 +1,6 @@
+import React from "react";
 import axios from "axios";
-import SignInRequestDto from "./request/auth/sign-in-request.dto";
+import { SignInRequestDto } from "./request/auth";
 import { SignInResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 
