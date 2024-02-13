@@ -8,9 +8,9 @@ import React, {
 import "./style.css";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { SignInRequestDto } from "apis/request/auth";
-import { signInRequest } from "apis";
-import { SignInResponseDto } from "apis/response/auth";
+import { SignInRequestDto, SignUpRequestDto } from "apis/request/auth";
+import { signInRequest, signUpRequest } from "apis";
+import { SignInResponseDto, SignUpResponseDto } from "apis/response/auth";
 import { ResponseDto } from "apis/response";
 import { MAIN_PATH } from "constant";
 import InputBox from "components/InputBox";
@@ -206,12 +206,12 @@ const Authentication = () => {
         <div className="access_options">
           <ul>
             <li>
-              <a
+              <div
                 className="auth-description-link"
                 onClick={onSignUpLinkClickHandler}
               >
                 {"회원가입"}
-              </a>
+              </div>
             </li>
             <li>
               <a href="#">이메일 찾기</a>
@@ -253,38 +253,345 @@ const Authentication = () => {
 
   // ===========================회원가입(sign-up) 시작 ================================
   const SignUpCard = () => {
+    //        state: 이메일 요소 참조 상태      //
+    const emailRef = useRef<HTMLInputElement | null>(null);
+    //        state: 이메일 인증번호 요소 참조 상태      //
+    const emailCertifiedRef = useRef<HTMLInputElement | null>(null);
+
+    //        state: 패스워드 요소 참조 상태     //
+    const passwordRef = useRef<HTMLInputElement | null>(null);
+    //        state: 패스워드 확인 요소 참조 상태      //
+    const passwordCheckRef = useRef<HTMLInputElement | null>(null);
+    //        state: 닉네임 요소 참조 상태      //
+    const nicknameRef = useRef<HTMLInputElement | null>(null);
+    //        state: 휴대폰 요소 참조 상태      //
+    const telNumberRef = useRef<HTMLInputElement | null>(null);
+
+    //        state: 이메일 상태            //
+    const [email, setEmail] = useState<string>("");
+    //        state: 이메일 인증번호 상태            //
+    const [emailCertified, setEmailCertified] = useState<string>("");
+    //        state: 패스워드 상태          //
+    const [password, setPassword] = useState<string>("");
+    //        state: 패스워드 확인 상태          //
+    const [passwordCheck, setPasswordCheck] = useState<string>("");
+    //        state: 닉네임 상태           //
+    const [nickname, setNickname] = useState<string>("");
+    //        state: 핸드폰 번호 상태           //
+    const [telNumber, setTelNumber] = useState<string>("");
+    //        state: 핸드폰 번호 상태           //
+    const [telNumberCertified, setTelNumberCertified] = useState<string>("");
+    //        state: 주소 상태           //
+    const [address, setAddress] = useState<string>("");
+    //        state: 상세주소 상태           //
+    const [addressDetail, setAddressDetail] = useState<string>("");
+    //        state: 개인 정보 동의 상태           //
+    const [agreedPersonal, setAgreedPersonal] = useState<boolean>(false);
+    //        state: 패스워드 타입 상태       //
+    const [passwordType, setPasswordType] = useState<"text" | "password">(
+      "password"
+    );
+    //        state: 패스워드 확인 타입 상태       //
+    const [passwordCheckType, setPasswordCheckType] = useState<
+      "text" | "password"
+    >("password");
+    //        state: 이메일 에러 상태       //
+    const [isEmailError, setEmailError] = useState<boolean>(false);
+    //        state: 패스워드 에러 상태       //
+    const [isPasswordError, setPasswordError] = useState<boolean>(false);
+    //        state: 패스워드 확인 에러 상태       //
+    const [isPasswordCheckError, setPasswordCheckError] =
+      useState<boolean>(false);
+    //        state: 닉네임 에러 상태       //
+    const [isNicknameError, setNicknameError] = useState<boolean>(false);
+    //        state: 핸드폰 번호 에러 상태       //
+    const [isTelNumberError, setTelNumberError] = useState<boolean>(false);
+    //        state: 주소 에러 상태       //
+    const [isAddressError, setAddressError] = useState<boolean>(false);
+    //        state: 개인 정보 동의 에러 상태       //
+    const [isAgreedPersonalError, setAgreedPersnalError] =
+      useState<boolean>(false);
+
+    //        state: 이메일 에러 메세지 상태       //
+    const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
+    //        state: 패스워드 에러 메세지 상태       //
+    const [passwordErrorMessage, setPasswordErrorMessage] =
+      useState<string>("");
+    //        state: 패스워드 확인 에러 메세지 상태       //
+    const [passwordCheckErrorMessage, setPasswordCheckErrorMessage] =
+      useState<string>("");
+    //        state: 닉네임 에러 메세지 상태       //
+    const [nicknameErrorMessage, setNicknameErrorMessage] =
+      useState<string>("");
+    //        state: 핸드폰 번호 에러 메세지 상태       //
+    const [telNumberErrorMessage, setTelNumberErrorMessage] =
+      useState<string>("");
+    //        state: 주소 에러 메세지 상태       //
+    const [addressErrorMessage, setAddressErrorMessage] = useState<string>("");
+    //      state: 패스워드 버튼 아이콘 상태      //
+    const [passwordButtonIcon, setPasswordButtonIcon] = useState<
+      "eye-light-off-icon" | "eye-light-on-icon"
+    >("eye-light-off-icon");
+    //      state: 패스워드 버튼 아이콘 상태      //
+    const [passwordCheckButtonIcon, setPasswordCheckButtonIcon] = useState<
+      "eye-light-off-icon" | "eye-light-on-icon"
+    >("eye-light-off-icon");
+
+    // event handler: 이메일 변경 이벤트 처리     //
+    const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setEmailError(false);
+      setEmail(value);
+      setEmailErrorMessage("");
+    };
+
+    // event handler: 이메일 키 다운 이벤트 처리      //
+    const onEmailkeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key !== "Enter") return;
+      if (!emailCertifiedRef.current) return;
+      emailCertifiedRef.current.focus();
+    };
+
+    // event handler: 이메일 키 다운 이벤트 처리      //
+    const onEmailCertifiedkeyDownHandler = (
+      event: KeyboardEvent<HTMLInputElement>
+    ) => {
+      if (event.key !== "Enter") return;
+      if (!passwordRef.current) return;
+      passwordRef.current.focus();
+    };
+
+    // event handler: 패스워드 변경 이벤트 처리     //
+    const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setPasswordError(false);
+      setPassword(value);
+      setPasswordErrorMessage("");
+    };
+
+    // event handler: 패스워드 버튼 클릭 이벤트 처리      //
+    const onPasswordButtonClickHandler = () => {
+      if (passwordButtonIcon === "eye-light-off-icon") {
+        setPasswordButtonIcon("eye-light-on-icon");
+        setPasswordType("text");
+      } else {
+        setPasswordButtonIcon("eye-light-off-icon");
+        setPasswordType("password");
+      }
+    };
+
+    // event handler: 패스워드 키 다운 이벤트 처리      //
+    const onPasswordKeyDownHandler = (
+      event: KeyboardEvent<HTMLInputElement>
+    ) => {
+      if (event.key !== "Enter") return;
+      if (!passwordCheckRef.current) return;
+      passwordCheckRef.current.focus();
+    };
+
+    // event handler: 패스워드 확인 변경 이벤트 처리     //
+    const onPasswordCheckChangeHandler = (
+      event: ChangeEvent<HTMLInputElement>
+    ) => {
+      const { value } = event.target;
+      setPasswordCheck(value);
+      setPasswordCheckError(false);
+      setPasswordCheckErrorMessage("");
+    };
+
+    // event handler: 패스워드 확인 버튼 클릭 이벤트 처리      //
+    const onPasswordCheckButtonClickHandler = () => {
+      if (passwordCheckButtonIcon === "eye-light-off-icon") {
+        setPasswordCheckButtonIcon("eye-light-on-icon");
+        setPasswordCheckType("text");
+      } else {
+        setPasswordCheckButtonIcon("eye-light-off-icon");
+        setPasswordCheckType("password");
+      }
+    };
+
+    // event handler: 패스워드 확인 키 다운 이벤트 처리      //
+    const onPasswordCheckDownHandler = (
+      event: KeyboardEvent<HTMLInputElement>
+    ) => {
+      if (event.key !== "Enter") return;
+    };
+
+    // event handler: 닉네임 키 다운 이벤트 처리      //
+    const onNicknameKeyDownHandler = (
+      event: KeyboardEvent<HTMLInputElement>
+    ) => {
+      if (event.key !== "Enter") return;
+      if (!telNumberRef.current) return;
+      telNumberRef.current.focus();
+    };
+
+    // event handler: 핸드폰 번호 변경 이벤트 처리      //
+    const onTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setTelNumber(value);
+      setTelNumberError(false);
+      setTelNumberErrorMessage("");
+    };
+
+    //        function: sign up response 처리 함수       //
+    const signUpResponse = (
+      responseBody: SignUpResponseDto | ResponseDto | null
+    ) => {
+      if (!responseBody) {
+        alert("네트워크 이상입니다.");
+        return;
+      }
+      const { code } = responseBody;
+      if (code === "DE") {
+        setEmailError(true);
+        setEmailErrorMessage("이미 존재하는 이메일 주소입니다.");
+      }
+      if (code === "DN") {
+        setNicknameError(true);
+        setNicknameErrorMessage("이미 존재하는 닉네임입니다.");
+      }
+      if (code === "DT") {
+        setTelNumberError(true);
+        setTelNumberErrorMessage("가입된 기록이 있는 핸드폰 번호입니다.");
+      }
+      if (code === "VF") alert("모든 값을 입력하세요.");
+      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code !== "SU") return;
+      setView("sign-in");
+    };
+
+    // event handler: 회원가입 버튼 클릭 이벤트 처리      //
+    const onSignUpButtonClickHandler = () => {
+      const hasNickname = nickname.trim().length !== 0;
+      if (!hasNickname) {
+        setNicknameError(true);
+        setNicknameErrorMessage("닉네임을 입력해주세요.");
+        nicknameRef.current?.focus();
+        return;
+      }
+      const telNumberPattern = /^[0-9]{11,13}$/;
+      const isTelNumberPattern = telNumberPattern.test(telNumber);
+      if (!isTelNumberPattern) {
+        setTelNumberError(true);
+        setTelNumberErrorMessage("숫자를 입력해주세요.");
+        telNumberRef.current?.focus();
+        return;
+      }
+      const hasAddress = address.length > 0;
+      if (!hasAddress) {
+        setAddressError(true);
+        setAddressErrorMessage("주소를 선택해주세요.");
+      }
+      if (!agreedPersonal) setAgreedPersnalError(true);
+      if (!hasNickname || !isTelNumberPattern || !agreedPersonal) return;
+      const requestBody: SignUpRequestDto = {
+        email,
+        password,
+        nickname,
+        telNumber,
+        address,
+        addressDetail,
+        agreedPersonal,
+      };
+      signUpRequest(requestBody).then(signUpResponse);
+    };
+
     return (
       <div className="root">
-        <div className="join_input_box">
-          <form action="">
-            <p>이메일</p>
-            <input type="text" placeholder="이메일을 입력해주세요." />
-            <p>비밀번호</p>
-            <input
-              type="text"
-              placeholder="영어 대소문자,숫자,특수문자 어쩌구 저쩌구"
+        <div className="auth-join-top">
+          <div className="auth-card-title">{"회원가입"}</div>
+          <div className="join_input_box">
+            <div className="join-Certified-Input-Box">
+              <InputBox
+                ref={emailRef}
+                label="이메일"
+                type="text"
+                placeholder="이메일을 입력해주세요."
+                value={email}
+                onChange={onEmailChangeHandler}
+                error={isEmailError}
+                message={emailErrorMessage}
+                onKeyDown={onEmailkeyDownHandler}
+              />
+              <div className="email-certification-btn">{"인증번호 발송"}</div>
+            </div>
+
+            <div className="join-Certified-Input-Box">
+              <InputBox
+                ref={emailCertifiedRef}
+                label="인증번호"
+                type="text"
+                placeholder="인증번호를 입력해주세요."
+                value={emailCertified}
+                onChange={onEmailChangeHandler}
+                error={isEmailError}
+                message={emailErrorMessage}
+                onKeyDown={onEmailCertifiedkeyDownHandler}
+              />
+              <div className="email-certification-btn">{"인증번호 확인"}</div>
+            </div>
+            <InputBox
+              ref={passwordRef}
+              label="비밀번호"
+              type={passwordType}
+              placeholder="비밀번호를 입력해주세요."
+              value={password}
+              onChange={onPasswordChangeHandler}
+              error={isPasswordError}
+              message={passwordErrorMessage}
+              icon={passwordButtonIcon}
+              onButtonClick={onPasswordButtonClickHandler}
+              onKeyDown={onPasswordKeyDownHandler}
             />
-            <p>비밀번호 확인</p>
-            <input type="text" placeholder="비밀번호를 다시 입력 어쩌구" />
-            <p>이름</p>
-            <input type="text" placeholder="이름 입력 어쩌구" />
+            <InputBox
+              ref={passwordCheckRef}
+              label="비밀번호 확인"
+              type={passwordCheckType}
+              placeholder="비밀번호를 다시 입력해주세요."
+              value={passwordCheck}
+              onChange={onPasswordCheckChangeHandler}
+              error={isPasswordCheckError}
+              message={passwordCheckErrorMessage}
+              icon={passwordCheckButtonIcon}
+              onButtonClick={onPasswordCheckButtonClickHandler}
+              onKeyDown={onPasswordCheckDownHandler}
+            />
 
-            <p>휴대폰 번호</p>
-            <div className="certification_box">
-              <input type="text" placeholder="숫자만 입력 어쩌구" />
-              <button type="submit">인증 요청</button>
+            <div className="join-Certified-Input-Box">
+              <InputBox
+                ref={telNumberRef}
+                label="핸드폰 번호"
+                type="text"
+                placeholder="핸드폰 번호를 입력해주세요."
+                value={telNumber}
+                onChange={onTelNumberChangeHandler}
+                error={isTelNumberError}
+                message={telNumberErrorMessage}
+              />
+              <div className="email-certification-btn">{"인증번호 발송"}</div>
             </div>
 
-            <p>인증번호</p>
-            <div className="certification_box">
-              <input type="text" />
-              <button type="submit">인증 확인</button>
-            </div>
+            <InputBox
+              ref={telNumberRef}
+              label="인증번호"
+              type="text"
+              placeholder="핸드폰 번호를 입력해주세요."
+              value={telNumberCertified}
+              onChange={onTelNumberChangeHandler}
+              error={isTelNumberError}
+              message={telNumberErrorMessage}
+            />
+          </div>
+        </div>
 
-            <button type="submit" className="join_button">
-              가입하기
-            </button>
-          </form>
+        <div className="auth-join-bottom">
+          <div
+            className="black-large-full-button"
+            onClick={onSignUpButtonClickHandler}
+          >
+            {"회원가입"}
+          </div>
         </div>
       </div>
     );

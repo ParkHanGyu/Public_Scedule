@@ -21,7 +21,7 @@
 }
 
 .inputbox-container:hover {
-  border-bottom: 1px solid rgb(0, 0, 0);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.424);
   box-shadow: none; /* 그림자 제거 */
 }
 

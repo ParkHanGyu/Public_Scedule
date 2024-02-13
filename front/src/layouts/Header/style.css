@@ -35,7 +35,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center; /* 하위 요소들 수직 가운데정렬 */
-  border-bottom: 1px solid rgb(200, 200, 200);
 }
 
 .headerNav {

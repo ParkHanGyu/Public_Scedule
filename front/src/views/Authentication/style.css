@@ -113,7 +113,7 @@
 .login_button_on {
   width: 100%;
   height: 55px;
-  border: 1px solid #7676763c;
+  border: 1px solid #76767600;
   border-radius: 10px;
 
   text-align: center;
@@ -127,13 +127,14 @@
 }
 
 /* ===================================================== */
-
 /* join */
 .certification_box {
   display: flex;
   flex-direction: row; /* 수정된 부분: 수평으로 나열 */
   align-items: center; /* 추가된 부분: 수직 가운데 정렬 */
 }
+
+/* 인증버튼 */
 .certification_box button {
   width: 100px;
   margin-top: 0px;
@@ -144,6 +145,7 @@
   border-color: #bfbaba5f;
   border-style: solid;
 }
+
 .certification_box input {
   width: 395px;
   padding-left: 10px; /* 왼쪽 여백 설정 */
@@ -156,26 +158,52 @@
 }
 
 .join_input_box input {
-  padding-left: 10px; /* 왼쪽 여백 설정 */
   width: 500px;
   height: 50px;
   border-radius: 8px;
   border-color: #bfbaba5f;
-  border-style: solid;
 }
 
-.join_input_box input:focus {
-  border: 2px solid #ababab9a; /* 포커스가 됐을 때 테두리 색상 지정 */
-  outline: none; /* 포커스 효과 제거 */
-  box-shadow: 0 0 3px rgba(177, 177, 177, 0.5); /* 포커스 효과를 좀 더 강조할 때 그림자 효과 추가 */
+.join_input_box .join-Certified-Input-Box input {
+  width: 340px;
+  height: 50px;
+  border-radius: 8px;
+  border-color: #bfbaba5f;
 }
 
-.join_button {
-  width: 100%;
-  margin-top: 30px;
+/* 회원가입 버튼 */
+.auth-join-bottom {
+  width: 500px;
+  margin: 30px auto;
   font-size: 15px;
   height: 50px;
   border-radius: 8px;
   border-color: #bfbaba5f;
   border-style: solid;
+
+  display: flex;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center;
+}
+
+.join-Certified-Input-Box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card-title {
+  text-align: center;
+}
+
+.email-certification-btn {
+  margin: 50px 0px 0px 30px;
+  display: flex;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  border: 1px solid #76767656;
+  border-radius: 8px;
+  width: 100px;
+  height: 50px;
+  font-size: 14px;
 }
