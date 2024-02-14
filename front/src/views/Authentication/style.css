@@ -1,7 +1,7 @@
 .root {
   width: 100%;
   height: 100%;
-  min-height: 800px;
+  min-height: 1030px;
   margin: auto;
 }
 
@@ -171,20 +171,33 @@
   border-color: #bfbaba5f;
 }
 
-/* 회원가입 버튼 */
+/* 회원가입 버튼, 취소 버튼 */
 .auth-join-bottom {
-  width: 500px;
-  margin: 30px auto;
+  width: 350px;
+  margin: 40px auto;
   font-size: 15px;
   height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 회원가입 진행 버튼 */
+.auth-join-button,
+.auth-cancel-button {
   border-radius: 8px;
   border-color: #bfbaba5f;
   border-style: solid;
+  width: 120px;
+  height: 50px;
 
   display: flex;
   justify-content: center; /* 수평 가운데 정렬 */
-  align-items: center;
+  align-items: center; /* 수직 가운데 정렬 */
 }
+
+/* 회원가입 취소 버튼 */
 
 .join-Certified-Input-Box {
   display: flex;
@@ -206,4 +219,11 @@
   width: 100px;
   height: 50px;
   font-size: 14px;
+}
+
+.join-terms-agreement-box {
+  background-color: #767676;
+  margin: 10px auto;
+  width: 500px;
+  min-height: 300px;
 }

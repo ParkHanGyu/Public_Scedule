@@ -253,6 +253,9 @@ const Authentication = () => {
 
   // ===========================회원가입(sign-up) 시작 ================================
   const SignUpCard = () => {
+    //        state: 페이지 번호 상태       //
+    const [page, setPage] = useState<1 | 2>(1);
+
     //        state: 이메일 요소 참조 상태      //
     const emailRef = useRef<HTMLInputElement | null>(null);
     //        state: 이메일 인증번호 요소 참조 상태      //
@@ -497,101 +500,159 @@ const Authentication = () => {
       signUpRequest(requestBody).then(signUpResponse);
     };
 
+    // event handler: 다음 버튼 클릭 이벤트 처리      //
+    const onNextButtonClickHandler = () => {
+      setPage(2);
+    };
+
+    //   page의 값이 2일때      //
+    useEffect(() => {
+      if (page === 2) {
+        if (!emailRef.current) return;
+        emailRef.current.focus();
+      }
+    }, [page]);
+
     return (
       <div className="root">
         <div className="auth-join-top">
-          <div className="auth-card-title">{"회원가입"}</div>
-          <div className="join_input_box">
-            <div className="join-Certified-Input-Box">
-              <InputBox
-                ref={emailRef}
-                label="이메일"
-                type="text"
-                placeholder="이메일을 입력해주세요."
-                value={email}
-                onChange={onEmailChangeHandler}
-                error={isEmailError}
-                message={emailErrorMessage}
-                onKeyDown={onEmailkeyDownHandler}
-              />
-              <div className="email-certification-btn">{"인증번호 발송"}</div>
-            </div>
+          {page === 1 && (
+            <>
+              <div className="auth-card-title">{"약관동의"}</div>
 
-            <div className="join-Certified-Input-Box">
-              <InputBox
-                ref={emailCertifiedRef}
-                label="인증번호"
-                type="text"
-                placeholder="인증번호를 입력해주세요."
-                value={emailCertified}
-                onChange={onEmailChangeHandler}
-                error={isEmailError}
-                message={emailErrorMessage}
-                onKeyDown={onEmailCertifiedkeyDownHandler}
-              />
-              <div className="email-certification-btn">{"인증번호 확인"}</div>
-            </div>
-            <InputBox
-              ref={passwordRef}
-              label="비밀번호"
-              type={passwordType}
-              placeholder="비밀번호를 입력해주세요."
-              value={password}
-              onChange={onPasswordChangeHandler}
-              error={isPasswordError}
-              message={passwordErrorMessage}
-              icon={passwordButtonIcon}
-              onButtonClick={onPasswordButtonClickHandler}
-              onKeyDown={onPasswordKeyDownHandler}
-            />
-            <InputBox
-              ref={passwordCheckRef}
-              label="비밀번호 확인"
-              type={passwordCheckType}
-              placeholder="비밀번호를 다시 입력해주세요."
-              value={passwordCheck}
-              onChange={onPasswordCheckChangeHandler}
-              error={isPasswordCheckError}
-              message={passwordCheckErrorMessage}
-              icon={passwordCheckButtonIcon}
-              onButtonClick={onPasswordCheckButtonClickHandler}
-              onKeyDown={onPasswordCheckDownHandler}
-            />
+              <div className="join-terms-agreement-box"></div>
+            </>
+          )}
 
-            <div className="join-Certified-Input-Box">
-              <InputBox
-                ref={telNumberRef}
-                label="핸드폰 번호"
-                type="text"
-                placeholder="핸드폰 번호를 입력해주세요."
-                value={telNumber}
-                onChange={onTelNumberChangeHandler}
-                error={isTelNumberError}
-                message={telNumberErrorMessage}
-              />
-              <div className="email-certification-btn">{"인증번호 발송"}</div>
-            </div>
+          {page === 2 && (
+            <>
+              <div className="auth-card-title">{"회원가입"}</div>
+              <div className="join_input_box">
+                <div className="join-Certified-Input-Box">
+                  <InputBox
+                    ref={emailRef}
+                    label="이메일"
+                    type="text"
+                    placeholder="이메일을 입력해주세요."
+                    value={email}
+                    onChange={onEmailChangeHandler}
+                    error={isEmailError}
+                    message={emailErrorMessage}
+                    onKeyDown={onEmailkeyDownHandler}
+                  />
+                  <div className="email-certification-btn">
+                    {"인증번호 발송"}
+                  </div>
+                </div>
 
-            <InputBox
-              ref={telNumberRef}
-              label="인증번호"
-              type="text"
-              placeholder="핸드폰 번호를 입력해주세요."
-              value={telNumberCertified}
-              onChange={onTelNumberChangeHandler}
-              error={isTelNumberError}
-              message={telNumberErrorMessage}
-            />
-          </div>
+                <div className="join-Certified-Input-Box">
+                  <InputBox
+                    ref={emailCertifiedRef}
+                    label="인증번호"
+                    type="text"
+                    placeholder="인증번호를 입력해주세요."
+                    value={emailCertified}
+                    onChange={onEmailChangeHandler}
+                    error={isEmailError}
+                    message={emailErrorMessage}
+                    onKeyDown={onEmailCertifiedkeyDownHandler}
+                  />
+                  <div className="email-certification-btn">
+                    {"인증번호 확인"}
+                  </div>
+                </div>
+                <InputBox
+                  ref={passwordRef}
+                  label="비밀번호"
+                  type={passwordType}
+                  placeholder="비밀번호를 입력해주세요."
+                  value={password}
+                  onChange={onPasswordChangeHandler}
+                  error={isPasswordError}
+                  message={passwordErrorMessage}
+                  icon={passwordButtonIcon}
+                  onButtonClick={onPasswordButtonClickHandler}
+                  onKeyDown={onPasswordKeyDownHandler}
+                />
+                <InputBox
+                  ref={passwordCheckRef}
+                  label="비밀번호 확인"
+                  type={passwordCheckType}
+                  placeholder="비밀번호를 다시 입력해주세요."
+                  value={passwordCheck}
+                  onChange={onPasswordCheckChangeHandler}
+                  error={isPasswordCheckError}
+                  message={passwordCheckErrorMessage}
+                  icon={passwordCheckButtonIcon}
+                  onButtonClick={onPasswordCheckButtonClickHandler}
+                  onKeyDown={onPasswordCheckDownHandler}
+                />
+
+                <div className="join-Certified-Input-Box">
+                  <InputBox
+                    ref={telNumberRef}
+                    label="핸드폰 번호"
+                    type="text"
+                    placeholder="핸드폰 번호를 입력해주세요."
+                    value={telNumber}
+                    onChange={onTelNumberChangeHandler}
+                    error={isTelNumberError}
+                    message={telNumberErrorMessage}
+                  />
+                  <div className="email-certification-btn">
+                    {"인증번호 발송"}
+                  </div>
+                </div>
+
+                <div className="join-Certified-Input-Box">
+                  <InputBox
+                    ref={telNumberRef}
+                    label="인증번호"
+                    type="text"
+                    placeholder="인증번호를 입력해주세요."
+                    value={telNumberCertified}
+                    onChange={onTelNumberChangeHandler}
+                    error={isTelNumberError}
+                    message={telNumberErrorMessage}
+                  />
+                  <div className="email-certification-btn">
+                    {"인증번호 확인"}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="auth-join-bottom">
-          <div
-            className="black-large-full-button"
-            onClick={onSignUpButtonClickHandler}
-          >
-            {"회원가입"}
-          </div>
+          {page === 1 && (
+            <>
+              <div
+                className="black-large-full-button"
+                onClick={onNextButtonClickHandler}
+              >
+                {"다음 단계"}
+              </div>
+            </>
+          )}
+
+          {page === 2 && (
+            <>
+              <div
+                className="auth-join-button"
+                onClick={onSignUpButtonClickHandler}
+              >
+                {"회원가입"}
+              </div>
+
+              <div
+                className="auth-cancel-button"
+                onClick={onSignUpButtonClickHandler}
+              >
+                {"취소"}
+              </div>
+            </>
+          )}
         </div>
       </div>
     );
