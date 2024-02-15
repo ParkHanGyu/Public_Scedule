@@ -502,7 +502,11 @@ const Authentication = () => {
 
     // event handler: 다음 버튼 클릭 이벤트 처리      //
     const onNextButtonClickHandler = () => {
-      setPage(2);
+      if (!agreementChecked || !privacyChecked) {
+        alert("이용약관과 개인정보 처리 방침에 동의해야 합니다.");
+      } else {
+        setPage(2);
+      }
     };
 
     //   page의 값이 2일때      //
@@ -513,14 +517,109 @@ const Authentication = () => {
       }
     }, [page]);
 
+    // 약관 동의 페이지 //
+    const [allChecked, setAllChecked] = useState(false);
+    const [agreementChecked, setAgreementChecked] = useState(false);
+    const [privacyChecked, setPrivacyChecked] = useState(false);
+    const [marketingChecked, setMarketingChecked] = useState(false);
+    const [buttonEnabled, setButtonEnabled] = useState(false);
+
+    // "모두 동의합니다" 체크박스 상태 변경 핸들러
+    const handleAllCheckedChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const isChecked = event.target.checked;
+      setAllChecked(isChecked);
+      setAgreementChecked(isChecked);
+      setPrivacyChecked(isChecked);
+      setMarketingChecked(isChecked);
+      // 필수 항목만 체크되었을 때 버튼 활성화
+      setButtonEnabled(isChecked); // 모두 동의할 때 버튼 활성화
+    };
+
+    // 각각의 체크박스 상태 변경 핸들러
+    // 이용약관 (필수)
+    const handleAgreementChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setAgreementChecked(event.target.checked);
+    };
+
+    // 개인정보 처리 방침 (필수)
+    const handlePrivacyChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setPrivacyChecked(event.target.checked);
+    };
+
+    // 마케팅 정보수신 동의 (선택)
+    const handleMarketingChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setMarketingChecked(event.target.checked);
+    };
+
     return (
       <div className="root">
         <div className="auth-join-top">
           {page === 1 && (
             <>
-              <div className="auth-card-title">{"약관동의"}</div>
+              <div>
+                <div className="auth-card-title">{"서비스 이용약관"}</div>
+                <div className="terms-agreement-page">
+                  <div className="terms-agreement-top-checkbox">
+                    <div className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        id="agreementCheckboxAll"
+                        checked={allChecked}
+                        onChange={handleAllCheckedChange}
+                      />
+                      <label htmlFor="agreementCheckboxAll">
+                        모두 동의합니다.
+                      </label>
+                    </div>
+                  </div>
 
-              <div className="join-terms-agreement-box"></div>
+                  <div className="terms-agreement-bottom-checkbox">
+                    <div className="terms-agreement-bottom-item">
+                      <div className="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="agreementCheckbox1"
+                          checked={agreementChecked}
+                          onChange={handleAgreementChange}
+                        />
+                        <label htmlFor="agreementCheckbox1">
+                          이용약관 (필수)
+                        </label>
+                      </div>
+                      <div className="view-link">보기</div>
+                    </div>
+
+                    <div className="terms-agreement-bottom-item">
+                      <div className="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="agreementCheckbox2"
+                          checked={privacyChecked}
+                          onChange={handlePrivacyChange}
+                        />
+                        <label htmlFor="agreementCheckbox2">
+                          개인정보 처리 방침 (필수)
+                        </label>
+                      </div>
+                      <div className="view-link">보기</div>
+                    </div>
+
+                    <div className="terms-agreement-bottom-item">
+                      <div className="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="agreementCheckbox3"
+                          checked={marketingChecked}
+                          onChange={handleMarketingChange}
+                        />
+                        <label htmlFor="agreementCheckbox3">
+                          마케팅 정보수신 동의 (선택)
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </>
           )}
 
@@ -628,10 +727,19 @@ const Authentication = () => {
           {page === 1 && (
             <>
               <div
-                className="black-large-full-button"
+                className={`black-large-full-button ${
+                  buttonEnabled ? "" : "disabled"
+                }`}
                 onClick={onNextButtonClickHandler}
               >
-                {"다음 단계"}
+                {"다음"}
+              </div>
+
+              <div
+                className="auth-cancel-button"
+                onClick={onSignUpButtonClickHandler}
+              >
+                {"취소"}
               </div>
             </>
           )}

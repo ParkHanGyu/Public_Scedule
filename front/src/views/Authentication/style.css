@@ -151,7 +151,8 @@
   padding-left: 10px; /* 왼쪽 여백 설정 */
 }
 
-.join_input_box {
+.join_input_box,
+.terms-agreement-page {
   margin: 10px auto;
   width: 500px;
   min-height: 300px;
@@ -185,7 +186,8 @@
 
 /* 회원가입 진행 버튼 */
 .auth-join-button,
-.auth-cancel-button {
+.auth-cancel-button,
+.black-large-full-button {
   border-radius: 8px;
   border-color: #bfbaba5f;
   border-style: solid;
@@ -226,4 +228,63 @@
   margin: 10px auto;
   width: 500px;
   min-height: 300px;
+}
+
+.terms-agreement-top-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0 10px; /* 좌우 여백 추가 */
+  height: 70px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.terms-agreement-top-checkbox,
+.terms-agreement-bottom-checkbox {
+  margin-bottom: 10px; /* 각 체크박스의 아래 간격 */
+  border-radius: 8px;
+  border: 1px solid #76767656;
+  background-color: #ffffff87;
+}
+
+.terms-agreement-bottom-item {
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 아이템들을 각 엔드에 정렬 */
+  padding: 0 10px; /* 좌우 여백 추가 */
+  height: 70px;
+  font-size: 18px;
+  margin: 10px 0px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center; /* 수평 정렬 */
+}
+
+.view-link {
+  padding-right: 10px;
+  color: #929292;
+}
+
+/* 활성화된 상태의 버튼 스타일 */
+.black-large-full-button {
+  background-color: #000;
+  color: #fff;
+  /* 기타 스타일 설정 */
+}
+
+/* 비활성화된 상태의 버튼 스타일 */
+.disabled {
+  background-color: #ccc;
+  color: #999;
+  cursor: not-allowed; /* 클릭이나 호버에 반응하지 않도록 설정 */
+  /* 기타 스타일 설정 */
 }
